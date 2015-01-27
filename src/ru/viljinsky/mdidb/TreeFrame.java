@@ -145,7 +145,6 @@ public class TreeFrame extends MDIFrame {
                         desktop.showFrame(info);
                    ;break;
                 }
-                
             }
 
             @Override
@@ -154,7 +153,6 @@ public class TreeFrame extends MDIFrame {
                 switch (command){
                     case "OPEN": action.setEnabled(browser.getSelectedFrameInfo()!=null);
                 }
-                
             }
         };
         
