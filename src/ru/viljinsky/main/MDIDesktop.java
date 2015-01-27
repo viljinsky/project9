@@ -53,8 +53,12 @@ public class MDIDesktop extends JDesktopPane {
             for (JInternalFrame f : getAllFrames()) {
                 if (f instanceof MDIFrame) {
                     try {
-                        f.hide();
-                        f.dispose();
+                        if (((MDIFrame)f).canClose()){
+                            f.hide();
+                            f.dispose();
+                        } else {
+                            throw new Exception("Окно не закрыто");
+                        }
                     } catch (Exception e) {
                         return false;
                     }
@@ -64,6 +68,40 @@ public class MDIDesktop extends JDesktopPane {
         return true;
     }
 
+    protected void cascade(){
+        int x,y,w,h;
+        x=0;y=0;
+        w = getWidth()*70/100;
+        h= getHeight()*70/100;
+        
+        JInternalFrame[] frames = getAllFrames();
+        for (int i=frames.length-1;i>=0;i--){
+            frames[i].setLocation(x, y);
+            frames[i].setSize(w,h);
+            x+=20;y+=20;
+        }
+    }
+    
+    protected void arrangeVert(){
+        int x,y,w,h;
+        x=0;y=0;w=getWidth();h=getHeight()/getAllFrames().length;
+        for (JInternalFrame frame :getAllFrames()){
+            frame.setSize(w,h);
+            frame.setLocation(x, y);
+            y+=h;
+        }
+    }
+    
+    protected void arrangeHor(){
+        int x,y,w,h;
+        x=0;y=0;w=getWidth()/getAllFrames().length;h=getHeight();
+        for (JInternalFrame frame :getAllFrames()){
+            frame.setSize(w,h);
+            frame.setLocation(x, y);
+            x+=w;
+        }
+    }
+    
     class WindowCommand extends MDICommand {
 
         @Override
@@ -76,13 +114,13 @@ public class MDIDesktop extends JDesktopPane {
             JInternalFrame frame;
             switch (command) {
                 case "arrange":
-                    ;
+                    cascade();
                     break;
                 case "arrange_ver":
-                    ;
+                    arrangeVert();
                     break;
                 case "arrange_hor":
-                    ;
+                   arrangeHor() ;
                     break;
                 case "close_all":
                     ;
@@ -90,6 +128,8 @@ public class MDIDesktop extends JDesktopPane {
                 case "close":
                     frame = getSelectedFrame();
                     if (frame != null) {
+                        if ((frame instanceof MDIFrame) && (!((MDIFrame)frame).canClose()))
+                                return;
                         frame.hide();
                         frame.dispose();
                     }

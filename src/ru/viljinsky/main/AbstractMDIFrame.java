@@ -71,9 +71,17 @@ public abstract class AbstractMDIFrame extends JInternalFrame {
 
             @Override
             public void internalFrameClosed(InternalFrameEvent e) {
-                closed();
-                desktop.windowCommand.updateActionList();
+                    closed();
+                    desktop.windowCommand.updateActionList();
             }
+
+            @Override
+            public void internalFrameClosing(InternalFrameEvent e) {
+                if (canClose())
+                    setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
+            }
+            
+            
 
             @Override
             public void internalFrameOpened(InternalFrameEvent e) {
@@ -116,5 +124,9 @@ public abstract class AbstractMDIFrame extends JInternalFrame {
      * Событие возникает при закрытии окна
      */
     public abstract void closed();
+    
+    public boolean canClose(){
+        return true;
+    }
     
 }

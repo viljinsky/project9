@@ -9,6 +9,7 @@ package ru.viljinsky.main;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
@@ -28,6 +29,7 @@ public class MDIFrame extends AbstractMDIFrame {
             }
         });
         initComponents();
+        setDefaultCloseOperation(JInternalFrame.DO_NOTHING_ON_CLOSE);
     }
 
     protected void showFrame() {
@@ -63,6 +65,8 @@ public class MDIFrame extends AbstractMDIFrame {
     public void opened() {
         desktop.windowMenu.add(frameMenuItem);
     }
+
+    
 
     @Override
     public void closed() {

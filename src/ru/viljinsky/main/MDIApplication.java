@@ -29,7 +29,7 @@ import javax.swing.SwingUtilities;
  */
 public class MDIApplication extends JFrame {
     /** Десктоп для размещения фреймов приложения*/
-    MDIDesktop desktop;
+    protected MDIDesktop desktop;
     JMenuBar menuBar;
     /** Меню управления фреймами */
     JMenu taskMenu; 

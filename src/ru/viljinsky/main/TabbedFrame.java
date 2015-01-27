@@ -40,6 +40,16 @@ public class TabbedFrame extends MDIFrame{
         splitPane.setResizeWeight(0.5);
         add(splitPane);
     }
+
+    @Override
+    protected void updateFrameMenu(JMenu menu) {
+        for (Action action:table.getActionList()){
+            menu.add(action);
+        }
+        menu.setEnabled(true);
+    }
+    
+    
     
     
     
