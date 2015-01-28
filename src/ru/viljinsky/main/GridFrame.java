@@ -12,9 +12,7 @@ package ru.viljinsky.main;
  */
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import javax.swing.*;
 import ru.viljinsky.db.*;
 import ru.viljinsky.grid2.*;
@@ -25,7 +23,16 @@ import ru.viljinsky.grid2.*;
  */
 public class GridFrame extends MDIFrame {
     DataModule dataModule =DataModule.getInstance();
-    Grid2 table;
+    Table table;
+    
+    class Table extends Grid2{
+
+        @Override
+        public void selectedRowChange() {
+            commands.updateActionList();
+        }
+        
+    }
 
     public GridFrame(FrameInfo frameInfo) {
         super(frameInfo);
@@ -34,7 +41,8 @@ public class GridFrame extends MDIFrame {
     
     @Override
     public void initComponents() {
-        table = new Grid2();//(3,5);
+        table = new Table();//(3,5);
+        table.setParent(this);
         commands = table.getCommands();
         add(new JScrollPane(table));
         

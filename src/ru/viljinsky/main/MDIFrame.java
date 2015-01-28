@@ -70,6 +70,10 @@ public class MDIFrame extends AbstractMDIFrame {
 
     @Override
     public void closed() {
+//        Object[] p = new Object[]{getTitle(),getLocation(),getSize()};
+//        System.out.println(p);
+        System.out.println("frame: "+getTitle()+" location:"+getLocation()+" size:"+getSize());
+        desktop.framePropertyes.put(getTitle(), new FrameProperties(getLocation(),getSize()));
         desktop.windowMenu.remove(frameMenuItem);
         System.out.println("FRAME CLOSED");
     }

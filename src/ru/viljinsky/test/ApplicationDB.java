@@ -48,7 +48,7 @@ public class ApplicationDB  extends MDIApplication{
     
     public static void main(String[] args){
         ApplicationDB application = new ApplicationDB();
-        application.pack();
+//        application.pack();
         application.setVisible(true);
         application.open();
     }

@@ -39,6 +39,11 @@ public class TabbedFrame extends MDIFrame{
         splitPane.setBottomComponent(tabbedPane);
         splitPane.setResizeWeight(0.5);
         add(splitPane);
+        
+        for (Action action:table.getActionList()){
+            toolBar.add(action);
+        }
+        showToolBar(true);
     }
 
     @Override

@@ -6,7 +6,7 @@
 
 package ru.viljinsky.main;
 
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.lang.reflect.Constructor;
 import javax.swing.AbstractAction;
@@ -15,16 +15,27 @@ import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
+import java.util.HashMap;
 
 /**
  *     D E S K T O P
  * @author vadik
  */
+class FrameProperties{
+    Point location;
+    Dimension dimension;
+    public FrameProperties(Point location,Dimension size){
+        this.location=location;
+        this.dimension=size;
+    }
+}
+
 public class MDIDesktop extends JDesktopPane {
     Action[] taskActions;
     JMenu windowMenu;
     JMenu frameMenu;
     WindowCommand windowCommand;
+    public HashMap<String, FrameProperties> framePropertyes = new HashMap<String, FrameProperties>();
 
     /**
      * Подсчёт количества запущенных фреймов класса className
@@ -164,6 +175,7 @@ public class MDIDesktop extends JDesktopPane {
 
     public MDIDesktop() {
         setPreferredSize(new Dimension(800, 600));
+        setBackground(Color.gray);
         initComponents();
     }
 
@@ -232,6 +244,15 @@ public class MDIDesktop extends JDesktopPane {
         Constructor cnstr = cls.getConstructors()[0];
         MDIFrame frame = (MDIFrame) cnstr.newInstance(frameInfo);
         frame.setDesktop(this);
+        
+        FrameProperties fp = framePropertyes.get(frame.getTitle());
+        if (fp!=null){
+            frame.setLocation(fp.location);
+            frame.setSize(fp.dimension);
+        }
+        
+        
+        
         frame.setVisible(true);
         return frame;
     }
@@ -243,6 +264,7 @@ public class MDIDesktop extends JDesktopPane {
             try {
                 frame = createMDIFrame(frameInfo);
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         frame.moveToFront();

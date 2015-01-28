@@ -8,9 +8,11 @@ package ru.viljinsky.grid2;
 
 import java.awt.event.*;
 import javax.swing.*;
+import java.util.HashMap;
 import javax.swing.event.*;
 import ru.viljinsky.db.*;
 import ru.viljinsky.main.MDICommand;
+import ru.viljinsky.dialogs.*;
 
 /**
  *
@@ -19,7 +21,11 @@ import ru.viljinsky.main.MDICommand;
 public class Grid2 extends JTable {
     GridModel2 model;
     MDICommand commands;
+    JComponent parent;
 
+    public void setParent(JComponent parent){
+        this.parent=parent;
+    }
     public Action[] getActionList(){
         return commands.getActionList();
     }
@@ -41,6 +47,64 @@ public class Grid2 extends JTable {
         return rowset;
     }
     
+    //-------------------------  Inserting Data -------------------------------
+    class InsertDialog extends DataEditDialog{
+
+        @Override
+        public void doEnterClick() throws Exception{
+            try{
+                DataOperator operator = new DataOperator(model.dataset);
+                String sql = operator.getInsertSQL();
+                DatasetValues v = operator.getInsertParamValues(model.dataset,getValues() );
+                DataModule.getInstance().execute(sql, v);
+            } catch (Exception e){
+                e.printStackTrace();
+                throw new Exception(e.getMessage());
+            }
+            
+        }
+    }
+    
+    public Integer showInsertDialog(){
+        InsertDialog dialog = new InsertDialog();
+        dialog.setParent(parent);
+        dialog.setDataSet(model.dataset);
+        dialog.setVisible(true);
+        return dialog.getResult();
+    }
+    
+    //------------------- Editing Data ---------------------------------------
+    
+    class EditDialog extends DataEditDialog{
+
+        @Override
+        protected void doEnterClick() throws Exception {
+            Object[] oldValues = model.getRowset(getSelectedRow());
+            try{
+                DataOperator operator = new DataOperator(model.dataset);
+                String sql = operator.getUpdateSQL();
+                DatasetValues v = operator.getUpdateParamValues(model.dataset, oldValues, getValues());
+                DataModule.getInstance().execute(sql, v);
+                System.out.println(sql+"\n"+v);
+            } catch (Exception e){
+                e.printStackTrace();
+                throw new Exception(e.getMessage());
+            }
+        }
+        
+    }
+    
+    public Integer showEditDialog(){
+        DataRowset rowset = getSelectedRowset();
+        System.out.println(rowset);
+        DataEditDialog dialog = new EditDialog();
+        dialog.setParent(parent);
+        dialog.setDataSet(model.dataset);
+        dialog.setValues(getSelectedRowset());
+        dialog.setVisible(true);
+        
+        return dialog.getResult();
+    }
 
     public Grid2() {
         super(1,1);
@@ -63,15 +127,23 @@ public class Grid2 extends JTable {
 
             @Override
             public void doCommand(String command) {
+                DataRowset rowset;
                 switch (command) {
                     case "APPEND":
-                        appendRec();
+                        if (showInsertDialog()==BaseDialog.RESULT_OK){
+                            requeryRec();
+//                            appendRec();
+//                            postRec();
+                        }
                         break;
                     case "INSERT":
                         insertRec();
                         break;
                     case "EDIT":
-                        editRec();
+                        if (showEditDialog()==BaseDialog.RESULT_OK){
+                            requeryRec();
+//                            editRec();
+                        }
                         break;
                     case "DELETE":
                         deleteRec();
@@ -243,6 +315,19 @@ public class Grid2 extends JTable {
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
+    
+    public void editRec(Object[] values){
+        Object[] oldValues = model.getRowset(getSelectedRow());
+        try{
+            DataOperator operator = new DataOperator(model.dataset);
+            String sql = operator.getUpdateSQL();
+            DatasetValues v = operator.getUpdateParamValues(model.dataset, oldValues, values);
+            DataModule.getInstance().execute(sql, v);
+            System.out.println(sql+"\n"+v);
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
 

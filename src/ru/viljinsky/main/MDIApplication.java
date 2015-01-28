@@ -8,6 +8,7 @@ package ru.viljinsky.main;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -89,6 +90,12 @@ public class MDIApplication extends JFrame {
                 close();
             }
         });
+//        pack();
+        Dimension d  = getToolkit().getScreenSize();
+        setSize(d.width*90/100, d.height*90/100);
+        setLocation((d.width-getWidth())/2, (d.height-getHeight())/2);
+        
+        
     }
     
     protected FrameInfo[] getFrameInfoList(){
