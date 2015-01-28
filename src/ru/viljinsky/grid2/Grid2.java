@@ -8,7 +8,6 @@ package ru.viljinsky.grid2;
 
 import java.awt.event.*;
 import javax.swing.*;
-import java.util.HashMap;
 import javax.swing.event.*;
 import ru.viljinsky.db.*;
 import ru.viljinsky.main.MDICommand;
