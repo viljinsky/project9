@@ -6,7 +6,7 @@
 
 package ru.viljinsky.test;
 
-import ru.viljinsky.main.*;
+import ru.viljinsky.mdi.MDIApplication;
 import java.awt.*;
 import javax.swing.*;
 

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package ru.viljinsky.main;
+package ru.viljinsky.mdi;
 
 import java.util.HashMap;
 
@@ -14,7 +14,7 @@ import java.util.HashMap;
  */
 public class FrameInfo {
     String frameTitile = "No frame title";
-    String frameCalssName = MDIFrame.class.getName();
+    String frameClassName = null ;//MDIFrame.class.getName();
     HashMap<String,Object> values = new HashMap<>();
 
     public FrameInfo(String frameTitle) {
@@ -23,7 +23,7 @@ public class FrameInfo {
 
     public FrameInfo(String frameTitle, String frameClassName) {
         this.frameTitile = frameTitle;
-        this.frameCalssName = frameClassName;
+        this.frameClassName = frameClassName;
     }
     
     @Override

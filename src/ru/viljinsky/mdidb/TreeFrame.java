@@ -8,11 +8,15 @@ package ru.viljinsky.mdidb;
 
 
 
+import ru.viljinsky.mdi.MDIFrame;
+import ru.viljinsky.mdi.GridFrame;
+import ru.viljinsky.mdi.MDICommand;
+import ru.viljinsky.mdi.FrameInfo;
+import ru.viljinsky.mdi.TabbedFrame;
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.*;
-import ru.viljinsky.main.*;
 import ru.viljinsky.db.*;
 import ru.viljinsky.db.form.*;
 import java.util.HashMap;

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package ru.viljinsky.main;
+package ru.viljinsky.mdi;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -54,7 +54,7 @@ public class MDIApplication extends JFrame {
     }
 
     class TaskCommand extends MDICommand {
-        String defaultFrameClass = GridFrame.class.getName() ;
+//        String defaultFrameClass = GridFrame.class.getName() ;
 
         @Override
         public String[] getCommandList() {
@@ -68,8 +68,8 @@ public class MDIApplication extends JFrame {
                     close();
                     break;
                 case "new_frame":
-                    int n = desktop.getFrameCount(defaultFrameClass)+1;
-                    FrameInfo frameInfo = new FrameInfo("Новый frame "+n,defaultFrameClass);
+                    int n = desktop.getFrameCount(desktop.defaultFrameClassName)+1;
+                    FrameInfo frameInfo = new FrameInfo("Новый фрейм "+n);//,defaultFrameClass);
                     desktop.showFrame(frameInfo);
                     break;
             }

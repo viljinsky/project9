@@ -10,9 +10,10 @@ package ru.viljinsky.test;
  *
  * @author вадик
  */
+import ru.viljinsky.mdi.MDIApplication;
+import ru.viljinsky.mdi.FrameInfo;
 import java.awt.*;
 import javax.swing.*;
-import ru.viljinsky.main.*;
 import ru.viljinsky.db.*;
 import ru.viljinsky.mdidb.*;
 

@@ -10,7 +10,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import ru.viljinsky.db.*;
-import ru.viljinsky.main.MDICommand;
+import ru.viljinsky.mdi.MDICommand;
 import ru.viljinsky.dialogs.*;
 
 /**

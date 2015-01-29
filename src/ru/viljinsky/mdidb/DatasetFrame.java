@@ -9,6 +9,8 @@ package ru.viljinsky.mdidb;
 
 
 
+import ru.viljinsky.mdi.MDIFrame;
+import ru.viljinsky.mdi.FrameInfo;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +20,6 @@ import javax.swing.*;
 
 import ru.viljinsky.db.*;
 import ru.viljinsky.db.form.*;
-import ru.viljinsky.main.*;
 import ru.viljinsky.grid2.*;
 
 

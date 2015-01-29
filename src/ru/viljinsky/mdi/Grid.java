@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package ru.viljinsky.main;
+package ru.viljinsky.mdi;
 
 import java.lang.reflect.Modifier;
 import javax.swing.AbstractAction;

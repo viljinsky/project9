@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package ru.viljinsky.main;
+package ru.viljinsky.mdi;
 
 import java.awt.BorderLayout;
 import javax.swing.Action;

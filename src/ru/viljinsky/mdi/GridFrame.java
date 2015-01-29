@@ -4,15 +4,13 @@
  * and open the template in the editor.
  */
 
-package ru.viljinsky.main;
+package ru.viljinsky.mdi;
 
 /**
  *
  * @author vadik
  */
 
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 import ru.viljinsky.db.*;
 import ru.viljinsky.grid2.*;

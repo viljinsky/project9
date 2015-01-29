@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package ru.viljinsky.main;
+package ru.viljinsky.mdi;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -35,6 +35,7 @@ public class MDIDesktop extends JDesktopPane {
     JMenu windowMenu;
     JMenu frameMenu;
     WindowCommand windowCommand;
+    String defaultFrameClassName = TextFrame.class.getName();
     public HashMap<String, FrameProperties> framePropertyes = new HashMap<String, FrameProperties>();
 
     /**
@@ -48,7 +49,7 @@ public class MDIDesktop extends JDesktopPane {
         for (JInternalFrame f : getAllFrames()) {
             if (f instanceof MDIFrame) {
                 frame = (MDIFrame) f;
-                if (frame.frameInfo.frameCalssName.equals(className)) {
+                if (frame.frameInfo.frameClassName.equals(className)) {
                     result += 1;
                 }
             }
@@ -240,7 +241,10 @@ public class MDIDesktop extends JDesktopPane {
     }
 
     protected MDIFrame createMDIFrame(FrameInfo frameInfo) throws Exception {
-        Class<?> cls = Class.forName(frameInfo.frameCalssName);
+        if (frameInfo.frameClassName==null){
+            frameInfo.frameClassName=defaultFrameClassName;
+        }
+        Class<?> cls = Class.forName(frameInfo.frameClassName);
         Constructor cnstr = cls.getConstructors()[0];
         MDIFrame frame = (MDIFrame) cnstr.newInstance(frameInfo);
         frame.setDesktop(this);
