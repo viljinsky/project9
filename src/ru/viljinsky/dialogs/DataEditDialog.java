@@ -21,34 +21,51 @@ public class DataEditDialog extends BaseDialog{
     Dataset dataset;
     DataEditPanel dataEditPanel;
     HashMap<String,JComponent> controls;
-
-//    public DataEditDialog(JComponent parent) {
-//        super(parent);
-//    }
-//
-//    public DataEditDialog() {
-//        super();
-//    }
-//
-//        
     
     class SelectButton extends JButton implements ActionListener{
         String referencedTableName;
-        Object value ;
-        public SelectButton(String refrencedTableName,Object value) {
+        String referencedColumnName;
+        String columnName;
+        
+        public SelectButton(String columnName,String refrencedTableName,String referencedColumnName) {
             super("...");
+            this.columnName=columnName;
             this.referencedTableName=refrencedTableName;
-            this.value = value;
+            this.referencedColumnName=referencedColumnName;
             addActionListener(this);
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println(referencedTableName+" "+value);
-            DataSelectDialog dlg = new DataSelectDialog();
-            dlg.setVisible(true);
+            HashMap<String,Object> keyValues;
+            keyValues = new HashMap<>();
+            JComponent c = controls.get(columnName);
+            JTextField f = (JTextField)c;
+            Object value;
+            value = (f.getText().isEmpty()?null:Integer.valueOf(f.getText()));
+            
+            keyValues.put(referencedColumnName, value);
+            try{
+                DataSelectDialog dlg = new DataSelectDialog();
+                dlg.setTitle("select from '"+referencedTableName+"'");
+                dlg.setTableName(referencedTableName);
+                dlg.setValues(keyValues);
+                dlg.setVisible(true);
             if (dlg.getResult()==RESULT_OK){
+                keyValues = dlg.getValues();
+                System.out.println(keyValues);
+                for (String k:keyValues.keySet()){
+                    if (keyValues.get(k)==null){
+                        f.setText("");
+                    } else
+                        f.setText(keyValues.get(k).toString());
+                    break;
+                }
                 System.out.println("OK");
+            }
+            } catch (Exception ex){
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage());
             }
         }
         
@@ -77,7 +94,7 @@ public class DataEditDialog extends BaseDialog{
             box.add(text);
             
             if (field.isReferenced()){
-                SelectButton btn = new SelectButton(field.getReferencedTable(),null);
+                SelectButton btn = new SelectButton(field.getColumnName(), field.getReferencedTable(),field.getReferencedColumn());
                 box.add(btn);
             }
             

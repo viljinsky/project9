@@ -8,6 +8,8 @@ package ru.viljinsky.mdidb;
 
 
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import ru.viljinsky.mdi.MDIFrame;
 import ru.viljinsky.mdi.GridFrame;
 import ru.viljinsky.mdi.MDICommand;
@@ -26,7 +28,6 @@ import java.util.HashMap;
  */
 
 class Browser extends JTree{
-//    DefaultMutableTreeNode nodeTable,nodeView,nodeForm,nodeReport;
     FrameInfo selectedFrameInfo = null;
     HashMap<String,DefaultMutableTreeNode> roots;
             
@@ -56,6 +57,22 @@ class Browser extends JTree{
         
         setModel(new DefaultTreeModel(root));
         
+        
+        addMouseListener(new MouseAdapter(){
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount()==2){
+                    DefaultMutableTreeNode  node = (DefaultMutableTreeNode)getLastSelectedPathComponent();
+                    Object obj = node.getUserObject();
+                    if (obj instanceof FrameInfo){
+                        selectedClick((FrameInfo)obj);
+                    }
+                }
+            }
+            
+        });
+        
         addTreeSelectionListener(new TreeSelectionListener() {
 
             @Override
@@ -75,6 +92,10 @@ class Browser extends JTree{
         });
         
     }
+    
+    public void selectedClick(FrameInfo info){
+       JOptionPane.showMessageDialog(Browser.this, info.toString());        
+    };
     
     public void setTableNames(String[] tableNames){
         DefaultMutableTreeNode root,node;
@@ -100,8 +121,7 @@ class Browser extends JTree{
             node = new DefaultMutableTreeNode(frameInfo);
             root.add(node);
         }
-    }
-    
+    }    
     public void setForms(DatasetForm[] forms){
         DefaultMutableTreeNode root,node;
         root = roots.get("FORM_ROOT");
@@ -120,6 +140,15 @@ public class TreeFrame extends MDIFrame {
     DataModule dataModule = DataModule.getInstance();
     Browser    browser;
     
+    class BrowserTree extends Browser{
+
+        @Override
+        public void selectedClick(FrameInfo info) {
+            desktop.showFrame(info);
+        }
+        
+    }
+    
     public TreeFrame(FrameInfo frameInfo) {
         super(frameInfo);
     }
@@ -127,7 +156,7 @@ public class TreeFrame extends MDIFrame {
     @Override
     public void initComponents() {
         
-        browser = new Browser();
+        browser = new BrowserTree();
         add(new JScrollPane(browser));
         
         commands = new MDICommand() {

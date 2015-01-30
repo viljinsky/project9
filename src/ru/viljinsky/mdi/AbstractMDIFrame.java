@@ -125,6 +125,10 @@ public abstract class AbstractMDIFrame extends JInternalFrame {
      */
     public abstract void closed();
     
+    public boolean queryClose(){
+        return false;
+    }
+    
     public boolean canClose(){
         return true;
     }

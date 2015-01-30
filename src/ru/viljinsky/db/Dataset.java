@@ -128,7 +128,7 @@ public class Dataset extends ArrayList<Object[]>{
     public Integer getEditMode() {
         return editMode;
     }
-    Integer rowIndex;
+    public Integer rowIndex;
     List<IDataset> listeners = new ArrayList<>();
     Object[] pendingRowset=null;
     HashMap<Integer,Object> filter = null;
