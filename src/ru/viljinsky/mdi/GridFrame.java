@@ -11,6 +11,8 @@ package ru.viljinsky.mdi;
  * @author vadik
  */
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.*;
 import ru.viljinsky.db.*;
 import ru.viljinsky.grid2.*;
@@ -48,6 +50,18 @@ public class GridFrame extends MDIFrame {
             toolBar.add(action);
         }
         showToolBar(true);
+        
+        table.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount()==2){
+//                    JOptionPane.showMessageDialog(rootPane, "WoubleClicl");
+                    commands.doCommand("EDIT");
+                }
+            }
+            
+        });
     }
 
     @Override

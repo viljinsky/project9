@@ -47,6 +47,7 @@ public class DataEditDialog extends BaseDialog{
             keyValues.put(referencedColumnName, value);
             try{
                 DataSelectDialog dlg = new DataSelectDialog();
+                dlg.setParent(c);
                 dlg.setTitle("select from '"+referencedTableName+"'");
                 dlg.setTableName(referencedTableName);
                 dlg.setValues(keyValues);
@@ -117,6 +118,9 @@ public class DataEditDialog extends BaseDialog{
     
     public void setDataSet(Dataset dataset){
         this.dataset=dataset;
+        
+        setTitle("table :'"+dataset.getTableName()+"'");
+        
         for (int i=0;i<dataset.getColumnCount();i++){
             dataEditPanel.addColumn(dataset.getColumn(i));
         }

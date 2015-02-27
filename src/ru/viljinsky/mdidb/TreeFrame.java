@@ -117,7 +117,9 @@ class Browser extends JTree{
         root.removeAllChildren();
         FrameInfo frameInfo;
         for (String viewName:viewNames){
-            frameInfo = new FrameInfo(viewName,TabbedFrame.class.getName());
+//            frameInfo = new FrameInfo(viewName,TabbedFrame.class.getName());
+            frameInfo = new FrameInfo(viewName,GridFrame.class.getName());
+            frameInfo.putValue("TABLE_NAME", viewName);
             node = new DefaultMutableTreeNode(frameInfo);
             root.add(node);
         }

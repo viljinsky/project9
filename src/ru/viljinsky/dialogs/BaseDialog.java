@@ -10,12 +10,13 @@ package ru.viljinsky.dialogs;
  *
  * @author вадик
  */
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.Util;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-public class BaseDialog  extends JDialog implements ActionListener{
+public class BaseDialog  extends JDialog {
     
     public static final int RESULT_NONE = 0;
     public static final int RESULT_OK = 1;
@@ -25,52 +26,34 @@ public class BaseDialog  extends JDialog implements ActionListener{
     public static final int RESULT_RETRY = 5;
     
     ButtonsPane buttonsPane;
+    Action[] actions;
+    
     protected int result = RESULT_NONE;
 
     public Integer getResult(){
         return result;
     }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        switch (e.getActionCommand()){
-            case "OK":
-                try{
-                    doEnterClick();
-                    result=RESULT_OK;
-                    setVisible(false);
-                } catch (Exception ex){
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(rootPane, ex.getMessage());
-                }
-                break;
-                
-            case "CANCEL":
-                result=RESULT_CANCEL;
-                setVisible(false);
-                break;
-        }
-    }
-    
+
     class ButtonsPane extends JPanel{
         String[] commands={"YES","NO","ABORT","OK","RETRY"};
         public ButtonsPane(){
             setLayout(new FlowLayout(FlowLayout.RIGHT));
             JButton button;
-            for (String cmd:new String[]{"OK","CANCEL"}){
-                button=new JButton(cmd);
-                button.addActionListener(BaseDialog.this);
-                add(button);
-            };
+            add(new JButton(actions[0]));
+            add(new JButton(actions[1]));
+            
         }
     }
     
 
     public BaseDialog(JComponent parent){
+        
+        
         setModal(true);
         setTitle("BaseDialog");
         initComponents(getContentPane());
         pack();
+        
         setParent(parent);
     }
     
@@ -90,11 +73,61 @@ public class BaseDialog  extends JDialog implements ActionListener{
         }
     }
     
+    protected void enter(){
+                try{
+                    doEnterClick();
+                    result=RESULT_OK;
+                    setVisible(false);
+                } catch (Exception ex){
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+                }
+    }
+    
+    protected void cancel(){
+                result=RESULT_CANCEL;
+                setVisible(false);                        
+    }
+    
     public void initComponents(Container content){
+        
+        actions = new Action[2];
+        actions[0] = new AbstractAction("OK"){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                enter();
+            }
+        };
+        
+        actions[1] = new AbstractAction("Cancel") {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cancel();
+            }
+        };
+        
         buttonsPane = new ButtonsPane();
         content.setLayout(new BorderLayout());
         content.add(buttonsPane,BorderLayout.PAGE_END);
         content.setPreferredSize(new Dimension(300, 400));
+        
+//        JRootPane rootPane = new JRootPane();
+        
+        KeyStroke strok;
+        InputMap inputMap = rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        
+        strok = KeyStroke.getKeyStroke("ENTER");        
+        inputMap.put(strok, "ENTER");        
+        rootPane.getActionMap().put("ENTER", actions[0]);
+
+        strok = KeyStroke.getKeyStroke("ESCAPE");
+        inputMap.put(strok, "ESCAPE");
+        rootPane.getActionMap().put("ESCAPE", actions[1]);
+        
+        
+        
     }
     
     
